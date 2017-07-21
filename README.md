@@ -8,7 +8,7 @@ There are three different versions with slightly different looks to them.  Each 
 
 The options for each version are the same no matter what you do.
 
-# How to guide.
+# How To
 
 The very first thing you need to do is ensure the calendar you want to use is set to public.  Go to Google calendar and check the settings.  This will not work if the calendar is not public.
 
@@ -66,10 +66,10 @@ Inside this init function is where any customization of options will need to go.
 * pastHeading - Markup you want placed before and outside of the parent element for past events. (string)
 * noPastHeading - Markup that replaces pastHeading if there are no past events. (string)
 * format - Description of the format in which the data should be displayed. Values that will be replaced with data are listed below.  Any other value will be placed into the output as is. (array)
-..* \*date\*
-..* \*summary\*
-..* \*description\*
-..* \*location\*
+  * \*date\*
+  * \*summary\*
+  * \*description\*
+  * \*location\*
 
 # Example Initialization
 
