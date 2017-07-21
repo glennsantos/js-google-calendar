@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Google Calendar Example</title>
+        <link href="google-cal-events.min.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="google-cal-events.min.js"></script>
+    </head>
+    <body>
+        <h1>Google Calendar Example</h1>
+        <div class="calendar-buffer"></div>
+        <div class="cal">
+            <div id="cal-past"></div>
+            <div id="cal-upcoming"></div>
+        </div>
+        <script>
+            googleCalEvents.init({
+                calendarAddress: 'yetaranu@gmail.com',
+                calendarAPI: 'AIzaSyAPQVAhGRpl8rDGLFMdYeBAvp1mYzyLr4g',
+                past: true,
+                upcoming: true,
+                dayNames: true,
+                times: true,
+                links: true,
+                maxPast: 5,
+                maxUpcoming: 5,
+                upcomingSelector: '#cal-upcoming',
+                pastSelector: '#cal-past',
+                upcomingHeading: '<div class="cal-header">Upcoming Events</div>',
+                noUpcomingHeading: '<div class="cal-header">There are no events coming up.</div>',
+                pastHeading: '<div class="cal-header">Past Events</div>',
+                noPastHeading: '<div class="cal-header">There are no past events.</div>',
+                format: ['*date*', '*summary*', '*description*', '*location*']
+            });
+        </script>
+    </body>
+</html>

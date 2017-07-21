@@ -6,8 +6,6 @@
  * You can find his version here: https://github.com/MilanKacurak/FormatGoogleCalendar
  * And maybe here               : https://www.kacurak.com/blog/turn-google-calendar-into-events-list-on-website
  *
- * His version is licensed via the MIT Lisense, so here:
- *
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Milan Kačurák
@@ -29,9 +27,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
- *
- * All changes done by James Sentinella.
  *
  */
 var googleCalEvents = (function() {
@@ -77,13 +72,16 @@ var googleCalEvents = (function() {
 
             upcomingResult.reverse(); // chronological order, from past to present
 
+            pastCounter = 1;
             for (i in pastResult) {
-                $pastElem.append(transformationList(pastResult[i], settings.format, settings.times, settings.dayNames));
+                $pastElem.append(transformationList(pastResult[i], settings.format, settings.times, pastCounter === 1, pastCounter === pastResult.length, settings.dayNames));
+                pastCounter++;
             }
 
+            upcomingCounter = 1;
             for (i in upcomingResult) {
                 if (upcomingCounter < settings.maxUpcoming) {
-                    $upcomingElem.append(transformationList(upcomingResult[i], settings.format, settings.times, settings.dayNames));
+                    $upcomingElem.append(transformationList(upcomingResult[i], settings.format, settings.times, upcomingCounter === 1, upcomingCounter === upcomingResult.length || upcomingCounter === settings.maxUpcoming, settings.dayNames));
                     upcomingCounter++;
                 } else {
                     break;
@@ -91,12 +89,22 @@ var googleCalEvents = (function() {
             }
 
             if ($upcomingElem.children().length !== 0) { // upcoming events
+                $("div").addClass(function(index, currentClass) {
+                    var newClass;
+                    if (currentClass === "cal") { newClass="cal-calendar"; }
+                    return newClass;
+                });
                 jQuery(settings.upcomingHeading).insertBefore($upcomingElem);
             } else if (settings.maxUpcoming !== 0) {     // no upcoming events
                 jQuery(settings.noUpcomingHeading).insertBefore($upcomingElem);
             }
 
             if ($pastElem.children().length !== 0) {
+                $("div").addClass(function(index, currentClass) {
+                    var newClass;
+                    if (currentClass === "cal") { newClass="cal-calendar"; }
+                    return newClass;
+                });
                 jQuery(settings.pastHeading).insertBefore($pastElem);
             } else if (settings.maxUpcoming !== 0) {
                 jQuery(settings.noPastHeading).insertBefore($pastElem);
@@ -115,7 +123,7 @@ var googleCalEvents = (function() {
         return false;
     };
     // Transforms the result list into human readable results.
-    var transformationList = function(result, format, times, dayNames) {
+    var transformationList = function(result, format, times, first, last, dayNames) {
         // Date indicates ALL DAY EVENT
         // Date time indicates it is NOT an all day event.
         var isAllDayEvent = result.start.date !== undefined,
@@ -123,7 +131,8 @@ var googleCalEvents = (function() {
             dateEnd   = getDateInfo(result.end.dateTime||result.end.date, isAllDayEvent),
             monthStart    = dateStart[1] + 1,
             linkDateVal   = dateStart[2].toString() + (monthStart < 10 ? '0' + monthStart : monthStart) + (dateStart[0] < 10 ? '0' + dateStart[0] : dateStart[0]),
-            output        = '<div class="cal-event"><a class="cal-link" href="https://calendar.google.com/calendar/render?src='+globalSettings.calendarAddress+'&tab=mc&date='+linkDateVal+'">'+'<!--'+isAllDayEvent+'-->',
+            eventClassOut = first ? 'cal-event cal-event-first' : last ? 'cal-event cal-event-last' : 'cal-event',
+            output        = globalSettings.links === true ? '<div class="'+eventClassOut+'"><a class="cal-link" href="https://calendar.google.com/calendar/render?src='+globalSettings.calendarAddress+'&tab=mc&date='+linkDateVal+'"><!--'+isAllDayEvent+'-->' : '<div class="'+eventClassOut+'"><!--'+isAllDayEvent+'-->',
             summary       = result.summary || '',
             description   = result.description || '',
             location      = result.location || '',
@@ -264,12 +273,13 @@ var googleCalEvents = (function() {
     return {
         init: function (settingsOverride) {
             var settings = {
-                calendarAddress: 'milan.kacurak@gmail.com',
-                calendarAPI: 'AIzaSyCR3-ptjHE-_douJsn8o20oRwkxt-zHStY',
+                calendarAddress: 'yetaranu@gmail.com',
+                calendarAPI: 'AIzaSyAg4zI3k917EGbnYZkssdEbJYeGMn2Osdo',
                 past: true,
                 upcoming: true,
                 dayNames: true,
                 times: true,
+                links: true,
                 maxPast: -1,
                 maxUpcoming: -1,
                 upcomingSelector: '#cal-upcoming',

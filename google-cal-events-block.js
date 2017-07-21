@@ -6,8 +6,6 @@
  * You can find his version here: https://github.com/MilanKacurak/FormatGoogleCalendar
  * And maybe here               : https://www.kacurak.com/blog/turn-google-calendar-into-events-list-on-website
  *
- * His version is licensed via the MIT Lisense, so here:
- *
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Milan Kačurák
@@ -29,9 +27,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
- *
- * All changes done by James Sentinella.
  *
  */
 var googleCalEvents = (function() {
@@ -83,9 +78,10 @@ var googleCalEvents = (function() {
                 pastCounter++;
             }
 
+            upcomingCounter = 1;
             for (i in upcomingResult) {
                 if (upcomingCounter < settings.maxUpcoming) {
-                    $upcomingElem.append(transformationList(upcomingResult[i], settings.format, settings.times, upcomingCounter === 0, upcomingCounter === upcomingResult.length - 1 || upcomingCounter === settings.maxUpcoming - 1));
+                    $upcomingElem.append(transformationList(upcomingResult[i], settings.format, settings.times, upcomingCounter === 1, upcomingCounter === upcomingResult.length || upcomingCounter === settings.maxUpcoming));
                     upcomingCounter++;
                 } else {
                     break;
@@ -93,12 +89,21 @@ var googleCalEvents = (function() {
             }
 
             if ($upcomingElem.children().length !== 0) { // upcoming events
+                $("div").addClass(function(index, currentClass) {
+                    var newClass;
+                    if (currentClass === "cal") { newClass="cal-calendar"; }
+                    return newClass;
+                });
                 jQuery(settings.upcomingHeading).insertBefore($upcomingElem);
             } else if (settings.maxUpcoming !== 0) {     // no upcoming events
                 jQuery(settings.noUpcomingHeading).insertBefore($upcomingElem);
             }
 
-            if ($pastElem.children().length !== 0) {
+            if ($pastElem.children().length !== 0) {$("div").addClass(function(index, currentClass) {
+                    var newClass;
+                    if (currentClass === "cal") { newClass="cal-calendar"; }
+                    return newClass;
+                });
                 jQuery(settings.pastHeading).insertBefore($pastElem);
             } else if (settings.maxUpcoming !== 0) {
                 jQuery(settings.noPastHeading).insertBefore($pastElem);
@@ -138,7 +143,11 @@ var googleCalEvents = (function() {
             format[i] = format[i].toString();
 
             if (format[i] === '*summary*') {
-                output = output.concat('<div class="cal-summary"><a class="cal-link" href="https://calendar.google.com/calendar/render?src='+globalSettings.calendarAddress+'&tab=mc&date='+linkDateVal+'">' + summary + '</a></div>');
+                if (globalSettings.links === true) {
+                    output = output.concat('<div class="cal-summary"><a class="cal-link" href="https://calendar.google.com/calendar/render?src='+globalSettings.calendarAddress+'&tab=mc&date='+linkDateVal+'">'+summary + '</a></div>');
+                } else {
+                    output = output.concat('<div class="cal-summary">'+summary+'</div>');
+                }
             } else if (format[i] === '*date*') {
                 output = output.concat(getFormattedDate(dateStart, dateEnd, isAllDayEvent, times));
             } else if (format[i] === '*description*') {
@@ -233,11 +242,12 @@ var googleCalEvents = (function() {
     return {
         init: function (settingsOverride) {
             var settings = {
-                calendarAddress: 'milan.kacurak@gmail.com',
-                calendarAPI: 'AIzaSyCR3-ptjHE-_douJsn8o20oRwkxt-zHStY',
+                calendarAddress: 'yetaranu@gmail.com',
+                calendarAPI: 'AIzaSyAg4zI3k917EGbnYZkssdEbJYeGMn2Osdo',
                 past: true,
                 upcoming: true,
                 times: true,
+                links: true,
                 maxPast: -1,
                 maxUpcoming: -1,
                 upcomingSelector: '#cal-upcoming',
