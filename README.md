@@ -8,17 +8,17 @@ There are three different versions with slightly different looks to them.  Each 
 
 The options for each version are the same no matter what you do.
 
-# How To
+# Pre-setup
 
-The very first thing you need to do is ensure the calendar you want to use is set to public.  Go to Google calendar and check the settings.  This will not work if the calendar is not public.
+There are a few things you need to ensure before you can get this working.
 
-Next you need to get an API key from Google.
+First you need to ensure the calendar you want to use is set to public.  Go to Google calendar and check the settings.  This will not work if the calendar is not public.
 
-[Here is a link to Google's API credentials page](https://console.developers.google.com/projectselector/apis/credentials)
+Next you need to get an API key from Google. [Here is a link to Google's API credentials page.](https://console.developers.google.com/projectselector/apis/credentials) Create a new project, or select an existing one.  Click on the credentials link and then click create credentials.  You want an API key.
 
-Create a new project, or select an existing one.  Click on the credentials link and then click create credentials.  You want an API key.
+# Setup
 
-Now, link the necessary files in your HTML document.  These should be in the `<head></head>` section of your file.
+Link the necessary files in your HTML document.  These should be in the `<head></head>` section of your file.
 
 ```html
 <!-- js-google-calendar css file -->
@@ -29,7 +29,7 @@ Now, link the necessary files in your HTML document.  These should be in the `<h
 <script src="google-cal-events.min.js"></script>
 ```
 
-Now add the HTML tags wherever you want them on your page. You can change cal-past and cal-upcoming to whatever you like as long as you modify the upcomingSelector and pastSelector.  The outer div isn't necessary for these to work.
+Add the HTML tags wherever you want them on your page. You can change cal-past and cal-upcoming to whatever you like as long as you modify the upcomingSelector and pastSelector in the init function.  The outer div isn't necessary for these to work.
 
 ```html
 <div class="cal">
@@ -38,11 +38,14 @@ Now add the HTML tags wherever you want them on your page. You can change cal-pa
 </div>
 ```
 
-Then we just call the init function.
+Then we just call the init function. This is the area where you will define any/all of the options you want to specify. Defaults are those below in the example initialization area.  At a minimum you will want to specify the calendarAddress and calendarAPI.
 
 ```javascript
 <script>
-      googleCalEvents.init({});
+      googleCalEvents.init({
+        calendarAddress: 'yetaranu@gmail.com',
+        calendarAPI: 'AIzaSyAPQVAhGRpl8rDGLFMdYeBAvp1mYzyLr4g'
+      });
 </script>
 ```
 
