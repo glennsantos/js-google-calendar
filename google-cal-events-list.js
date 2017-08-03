@@ -88,6 +88,7 @@ var googleCalEvents = (function() {
                 }
             }
 
+            jQuery(getInfoString()).insertBefore($upcomingElem);
             if ($upcomingElem.children().length !== 0) { // upcoming events
                 $("div").addClass(function(index, currentClass) {
                     var newClass;
@@ -99,6 +100,7 @@ var googleCalEvents = (function() {
                 jQuery(settings.noUpcomingHeading).insertBefore($upcomingElem);
             }
 
+            jQuery(getInfoString()).insertBefore($pastElem);
             if ($pastElem.children().length !== 0) {
                 $("div").addClass(function(index, currentClass) {
                     var newClass;
@@ -269,6 +271,10 @@ var googleCalEvents = (function() {
             newObject[i] = overrideSettings[i];
         }
         return newObject;
+    };
+    // Use this to output any comments in the HTML you might want.
+    var getInfoString = function() {
+        return "<!-- Get this calendar at https://github.com/grecaun/js-google-calendar -->";
     };
     return {
         init: function (settingsOverride) {
